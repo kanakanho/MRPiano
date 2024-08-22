@@ -102,7 +102,8 @@ Pianoがトグルボタンで存在し、これをオンにするとイマーシ
 ├── ImmersiveView.swift // 必要に応じて変更
 ├── PlayPianoSound // ピアノの音を鳴らす処理を記述する *
 │   └── PlayMIDI.swift // MIDIファイルを元に音を鳴らす処理を行う *
-└── PlayPianoView.swift // ピアノの練習を行う画面 *
+└── PlayPianoView // ピアノの練習を行う画面
+    └── PlayPianoView.swift // ピアノの練習を行う画面 *
 ```
 
 ## DataHandler

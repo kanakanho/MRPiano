@@ -13,6 +13,15 @@
 		EB88087C2C77DE5000827661 /* ImmersiveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB88087B2C77DE5000827661 /* ImmersiveView.swift */; };
 		EB88087E2C77DE5100827661 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB88087D2C77DE5100827661 /* Assets.xcassets */; };
 		EB8808812C77DE5100827661 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB8808802C77DE5100827661 /* Preview Assets.xcassets */; };
+		EB8808892C77DEA700827661 /* PlayPianoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8808882C77DEA700827661 /* PlayPianoView.swift */; };
+		EB88088D2C77DEDC00827661 /* PlayMIDI.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB88088C2C77DEDC00827661 /* PlayMIDI.swift */; };
+		EB8808912C77DF0800827661 /* MusicDatas.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8808902C77DF0800827661 /* MusicDatas.swift */; };
+		EB8808932C77DF1700827661 /* PlayingMusicDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8808922C77DF1700827661 /* PlayingMusicDataHandler.swift */; };
+		EB8808952C77DF2900827661 /* CsvDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8808942C77DF2900827661 /* CsvDataHandler.swift */; };
+		EB8808972C77DF3D00827661 /* NotesDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8808962C77DF3D00827661 /* NotesDataHandler.swift */; };
+		EB88089A2C77DFB200827661 /* bach-menuet.midi in Resources */ = {isa = PBXBuildFile; fileRef = EB8808992C77DFB200827661 /* bach-menuet.midi */; };
+		EB88089C2C77DFB800827661 /* notes_minuet_utf8_encoded.csv in Resources */ = {isa = PBXBuildFile; fileRef = EB88089B2C77DFB800827661 /* notes_minuet_utf8_encoded.csv */; };
+		EB88089E2C77DFC300827661 /* soundfont.sf2 in Resources */ = {isa = PBXBuildFile; fileRef = EB88089D2C77DFC300827661 /* soundfont.sf2 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +33,15 @@
 		EB88087D2C77DE5100827661 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EB8808802C77DE5100827661 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EB8808822C77DE5100827661 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EB8808882C77DEA700827661 /* PlayPianoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayPianoView.swift; sourceTree = "<group>"; };
+		EB88088C2C77DEDC00827661 /* PlayMIDI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayMIDI.swift; sourceTree = "<group>"; };
+		EB8808902C77DF0800827661 /* MusicDatas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicDatas.swift; sourceTree = "<group>"; };
+		EB8808922C77DF1700827661 /* PlayingMusicDataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingMusicDataHandler.swift; sourceTree = "<group>"; };
+		EB8808942C77DF2900827661 /* CsvDataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsvDataHandler.swift; sourceTree = "<group>"; };
+		EB8808962C77DF3D00827661 /* NotesDataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesDataHandler.swift; sourceTree = "<group>"; };
+		EB8808992C77DFB200827661 /* bach-menuet.midi */ = {isa = PBXFileReference; lastKnownFileType = audio.midi; name = "bach-menuet.midi"; path = "MRPiano/FileData/bach-menuet.midi"; sourceTree = SOURCE_ROOT; };
+		EB88089B2C77DFB800827661 /* notes_minuet_utf8_encoded.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = notes_minuet_utf8_encoded.csv; path = MRPiano/FileData/notes_minuet_utf8_encoded.csv; sourceTree = SOURCE_ROOT; };
+		EB88089D2C77DFC300827661 /* soundfont.sf2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = soundfont.sf2; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,9 +76,14 @@
 		EB8808722C77DE5000827661 /* MRPiano */ = {
 			isa = PBXGroup;
 			children = (
+				EB88089D2C77DFC300827661 /* soundfont.sf2 */,
 				EB8808772C77DE5000827661 /* MRPianoApp.swift */,
 				EB8808792C77DE5000827661 /* ContentView.swift */,
 				EB88087B2C77DE5000827661 /* ImmersiveView.swift */,
+				EB8808982C77DF7600827661 /* FileData */,
+				EB88088E2C77DEEA00827661 /* DataHandler */,
+				EB88088B2C77DECD00827661 /* PlayPianoSound */,
+				EB88088A2C77DEB700827661 /* PlayPianoView */,
 				EB88087D2C77DE5100827661 /* Assets.xcassets */,
 				EB8808822C77DE5100827661 /* Info.plist */,
 				EB88087F2C77DE5100827661 /* Preview Content */,
@@ -82,6 +105,50 @@
 				EB8808802C77DE5100827661 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		EB88088A2C77DEB700827661 /* PlayPianoView */ = {
+			isa = PBXGroup;
+			children = (
+				EB8808882C77DEA700827661 /* PlayPianoView.swift */,
+			);
+			path = PlayPianoView;
+			sourceTree = "<group>";
+		};
+		EB88088B2C77DECD00827661 /* PlayPianoSound */ = {
+			isa = PBXGroup;
+			children = (
+				EB88088C2C77DEDC00827661 /* PlayMIDI.swift */,
+			);
+			path = PlayPianoSound;
+			sourceTree = "<group>";
+		};
+		EB88088E2C77DEEA00827661 /* DataHandler */ = {
+			isa = PBXGroup;
+			children = (
+				EB88088F2C77DEF100827661 /* FileDataHandler */,
+				EB8808902C77DF0800827661 /* MusicDatas.swift */,
+				EB8808922C77DF1700827661 /* PlayingMusicDataHandler.swift */,
+			);
+			path = DataHandler;
+			sourceTree = "<group>";
+		};
+		EB88088F2C77DEF100827661 /* FileDataHandler */ = {
+			isa = PBXGroup;
+			children = (
+				EB8808942C77DF2900827661 /* CsvDataHandler.swift */,
+				EB8808962C77DF3D00827661 /* NotesDataHandler.swift */,
+			);
+			path = FileDataHandler;
+			sourceTree = "<group>";
+		};
+		EB8808982C77DF7600827661 /* FileData */ = {
+			isa = PBXGroup;
+			children = (
+				EB8808992C77DFB200827661 /* bach-menuet.midi */,
+				EB88089B2C77DFB800827661 /* notes_minuet_utf8_encoded.csv */,
+			);
+			path = FileData;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -145,8 +212,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB88089E2C77DFC300827661 /* soundfont.sf2 in Resources */,
+				EB88089C2C77DFB800827661 /* notes_minuet_utf8_encoded.csv in Resources */,
 				EB8808812C77DE5100827661 /* Preview Assets.xcassets in Resources */,
 				EB88087E2C77DE5100827661 /* Assets.xcassets in Resources */,
+				EB88089A2C77DFB200827661 /* bach-menuet.midi in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,8 +227,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB8808932C77DF1700827661 /* PlayingMusicDataHandler.swift in Sources */,
 				EB88087A2C77DE5000827661 /* ContentView.swift in Sources */,
+				EB8808912C77DF0800827661 /* MusicDatas.swift in Sources */,
+				EB8808952C77DF2900827661 /* CsvDataHandler.swift in Sources */,
 				EB8808782C77DE5000827661 /* MRPianoApp.swift in Sources */,
+				EB88088D2C77DEDC00827661 /* PlayMIDI.swift in Sources */,
+				EB8808892C77DEA700827661 /* PlayPianoView.swift in Sources */,
+				EB8808972C77DF3D00827661 /* NotesDataHandler.swift in Sources */,
 				EB88087C2C77DE5000827661 /* ImmersiveView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

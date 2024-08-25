@@ -152,7 +152,11 @@ struct PlayPianoView: View {
             Button(action: {
                 print("再生される音")
                 print("--------------------------------")
-                var noteDatas = notesDataHandler.dataWithinTimeRange(offsetTime: 2.0+middleTime, date: Date())
+                // 任意の時間後に再生されるかを設定する変数
+                var offsetTimeForGetDataWithinTimeRange = 2.0
+                // 経過時間分をシフトする
+                offsetTimeForGetDataWithinTimeRange += middleTime
+                var noteDatas = notesDataHandler.dataWithinTimeRange(offsetTime: offsetTimeForGetDataWithinTimeRange, date: Date())
                 for noteData in noteDatas {
                     print("noteNumber: \(noteData.noteNumber) noteName: \(noteData.noteName)")
                 }

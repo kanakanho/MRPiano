@@ -22,6 +22,7 @@ struct PlayPianoView: View {
     @State private var progressPublisher: AnyCancellable?
     @State private var initialMiddleTime: Double = 0.0
     @State private var playbackStartTime: Date?
+    @State private var endTime: Double
     
     init(playingMusicDataHandler: PlayingMusicDataHandler) {
         self.playingMusicDataHandler = playingMusicDataHandler
@@ -29,7 +30,8 @@ struct PlayPianoView: View {
         self.middleTime = playingMusicDataHandler.getMiddleTime()
         self.isCorrectFinger = playingMusicDataHandler.getIsCorrectFinger()
         self.isCorrectMusic = playingMusicDataHandler.getIsCorrectMusic()
-        self.playMIDI = PlayMIDI(midiFileName:  playingMusicDataHandler.getMidiFileName())
+        self.playMIDI = PlayMIDI(midiFileName: playingMusicDataHandler.getMidiFileName())
+        self.endTime = playingMusicDataHandler.getEndTime()
     }
     
     var body: some View {
@@ -39,27 +41,28 @@ struct PlayPianoView: View {
                     .font(.title)
                     .padding(12)
                 ){
-                    HStack{
-                        Picker("開始までの猶予", selection: $offsetTime) {
-                            ForEach(0..<11) {
-                                Text("\($0)s").tag(Double($0))
-                            }
+                    Picker("開始までの猶予", selection: $offsetTime) {
+                        ForEach(0..<11) {
+                            Text("\($0)s").tag(Double($0))
                         }
-                        .onChange(of: offsetTime) {
-                            playingMusicDataHandler.setOffsetTime(offsetTime: offsetTime)
-                        }
+                    }
+                    .disabled(playing)
+                    .onChange(of: offsetTime) {
+                        playingMusicDataHandler.setOffsetTime(offsetTime: offsetTime)
                     }
                     Toggle("運指を表示", isOn: $isCorrectFinger)
                         .onChange(of: isCorrectFinger) {
                             playingMusicDataHandler.changeIsCorrectFinger()
                         }
+                        .disabled(playing)
                     Toggle("正しい音楽を演奏", isOn: $isCorrectMusic)
                         .onChange(of: isCorrectMusic) {
                             playingMusicDataHandler.changeIsCorrectMusic()
                         }
+                        .disabled(playing)
                 }
             }
-            ProgressView(value: middleTime,total: playingMusicDataHandler.getEndTime())
+            ProgressView(value: max(0.0,middleTime),total: endTime)
                 .tint(.white)
                 .frame(height: 20)
                 .scaleEffect(x: 1, y: 40, anchor: .center)
@@ -74,6 +77,7 @@ struct PlayPianoView: View {
                         Image(systemName: "backward")
                             .padding(24)
                     }
+                    .disabled(playing)
                     Text("最初に戻る")
                 }
                 VStack{
@@ -88,6 +92,7 @@ struct PlayPianoView: View {
                         Image(systemName: "gobackward")
                             .padding(24)
                     }
+                    .disabled(playing)
                     Text("少し前に戻る")
                 }
                 .padding(24)
@@ -99,22 +104,13 @@ struct PlayPianoView: View {
                         print("Finger\t \(playingMusicDataHandler.getIsCorrectFinger())")
                         print("Music\t \(playingMusicDataHandler.getIsCorrectMusic())")
                         
-                        playing.toggle()
-                        if playing {
-                            // ノーツ表示・運指表示に関しては、offsetTimeを待たずに処理を開始する
-                            // 正解音声と進行バーについてはoffsetTimeを待ってから処理を開始する
-                            Thread.sleep(forTimeInterval: playingMusicDataHandler.getOffsetTime())
-                            if isCorrectMusic {
-                                playMIDI.play(middleTime: playingMusicDataHandler.getMiddleTime())
-                            }
-                            initialMiddleTime = middleTime
-                            playbackStartTime = Date()
-                            startProgressPublisher()
+                        if middleTime >= endTime {
+                            middleTime = 0.0
+                        }
+                        if !playing {
+                            startPlaying()
                         } else {
-                            if isCorrectMusic {
-                                playMIDI.stop()
-                            }
-                            stopProgressPublisher()
+                            stopPlaying()
                         }
                     }) {
                         if !playing {
@@ -136,12 +132,17 @@ struct PlayPianoView: View {
                 }
                 VStack{
                     Button(action: {
-                        middleTime += 1.0
+                        if middleTime + 1.0 < endTime {
+                            middleTime += 1.0
+                        } else {
+                            middleTime = endTime
+                        }
                         playingMusicDataHandler.setMiddleTime(middleTime: middleTime)
                     }) {
                         Image(systemName: "goforward")
                             .padding(24)
                     }
+                    .disabled(playing)
                     Text("少し先に進む")
                 }
                 .padding(24)
@@ -150,12 +151,39 @@ struct PlayPianoView: View {
         .navigationTitle("\(playingMusicDataHandler.getTitle())/\(playingMusicDataHandler.getComposer())")
     }
     
+    private func startPlaying() {
+        playing = true
+        // ノーツ表示・運指表示に関しては、offsetTimeを待たずに処理を開始する
+        // 正解音声と進行バーについてはoffsetTimeを待ってから処理を開始する
+        Thread.sleep(forTimeInterval: playingMusicDataHandler.getOffsetTime())
+        if isCorrectMusic {
+            playMIDI.play(middleTime: playingMusicDataHandler.getMiddleTime())
+        }
+        initialMiddleTime = middleTime
+        playbackStartTime = Date()
+        startProgressPublisher()
+    }
+    
+    private func stopPlaying() {
+        playing = false
+        if isCorrectMusic {
+            playMIDI.stop()
+        }
+        stopProgressPublisher()
+    }
+    
     private func startProgressPublisher() {
         progressPublisher = Timer.publish(every: 0.1, on: .main, in: .common)
             .autoconnect()
             .sink { _ in
                 guard let startTime = playbackStartTime else { return }
                 let elapsedTime = Date().timeIntervalSince(startTime)
+                if middleTime > endTime - 0.1 {
+                    middleTime = 0.0
+                    playingMusicDataHandler.setMiddleTime(middleTime: middleTime)
+                    stopPlaying()
+                    return
+                }
                 middleTime = max(0.0, initialMiddleTime + elapsedTime)
                 playingMusicDataHandler.setMiddleTime(middleTime: middleTime)
             }

@@ -48,6 +48,10 @@ struct PlayingMusicDataHandler:Identifiable {
         self.endTime = csvDataHandler.lastNoteTime()
     }
     
+    func getNotesDataHandler() -> NotesDataHandler {
+        return notesDataHandler
+    }
+    
     func getEndTime() -> Double {
         return endTime
     }

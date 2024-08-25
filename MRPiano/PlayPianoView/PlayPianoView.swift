@@ -10,6 +10,7 @@ import Combine
 
 struct PlayPianoView: View {
     @State private var playingMusicDataHandler: PlayingMusicDataHandler
+    @State private var notesDataHandler: NotesDataHandler
     
     @State private var offsetTime: Double
     @State private var middleTime: Double
@@ -26,6 +27,7 @@ struct PlayPianoView: View {
     
     init(playingMusicDataHandler: PlayingMusicDataHandler) {
         self.playingMusicDataHandler = playingMusicDataHandler
+        self.notesDataHandler = playingMusicDataHandler.getNotesDataHandler()
         self.offsetTime = playingMusicDataHandler.getOffsetTime()
         self.middleTime = playingMusicDataHandler.getMiddleTime()
         self.isCorrectFinger = playingMusicDataHandler.getIsCorrectFinger()
@@ -147,6 +149,16 @@ struct PlayPianoView: View {
                 }
                 .padding(24)
             }
+            Button(action: {
+                print("再生される音")
+                print("--------------------------------")
+                var noteDatas = notesDataHandler.dataWithinTimeRange(offsetTime: 2.0+middleTime, date: Date())
+                for noteData in noteDatas {
+                    print("noteNumber: \(noteData.noteNumber) noteName: \(noteData.noteName)")
+                }
+            }){
+                Text("2秒後に再生される音を知る")
+            }
         }
         .navigationTitle("\(playingMusicDataHandler.getTitle())/\(playingMusicDataHandler.getComposer())")
     }
@@ -162,6 +174,7 @@ struct PlayPianoView: View {
         initialMiddleTime = middleTime
         playbackStartTime = Date()
         startProgressPublisher()
+        notesDataHandler.setStartTime(date: Date())
     }
     
     private func stopPlaying() {
@@ -170,6 +183,7 @@ struct PlayPianoView: View {
             playMIDI.stop()
         }
         stopProgressPublisher()
+        notesDataHandler.setEndTime(date: Date())
     }
     
     private func startProgressPublisher() {

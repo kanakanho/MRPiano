@@ -63,6 +63,8 @@ struct NotesDataHandler {
             }
         }
         
+        print(midiNoteNumberDf.description)
+        
         printMIDIDatas()
     }
     
@@ -74,6 +76,12 @@ struct NotesDataHandler {
     mutating func setEndTime(date:Date) {
         isPlaying = false
         startTime = nil
+    }
+    
+    func dataWithinTimeRange(offsetTime: Double, date: Date) -> [NoteData] {
+        // 時間のオフセットを計算する
+        let offsetDate = date.addingTimeInterval(offsetTime)
+        return nowPlaying(date: offsetDate)
     }
     
     func nowPlaying(date:Date) -> [NoteData] {

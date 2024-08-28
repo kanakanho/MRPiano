@@ -26,5 +26,5 @@ struct ImmersiveView: View {
 }
 
 #Preview(immersionStyle: .mixed) {
-                ImmersiveView(musicDatas: MusicDatas())
+    ImmersiveView(musicDatas: MusicDatas())
 }

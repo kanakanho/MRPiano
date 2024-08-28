@@ -15,7 +15,7 @@ struct MRPianoApp: App {
         WindowGroup {
             ContentView(musicDatas: musicDatas)
         }
-
+        
         ImmersiveSpace(id: "ImmersiveSpace") {
             ImmersiveView(musicDatas: musicDatas)
                 .id(musicDatas.getSelectedIndex())

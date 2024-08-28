@@ -9,13 +9,16 @@ import SwiftUI
 
 @main
 struct MRPianoApp: App {
+    @ObservedObject private var musicDatas = MusicDatas()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(musicDatas: musicDatas)
         }
 
         ImmersiveSpace(id: "ImmersiveSpace") {
-            ImmersiveView()
+            ImmersiveView(musicDatas: musicDatas)
+                .id(musicDatas.getSelectedIndex())
         }
     }
 }

@@ -8,6 +8,7 @@
 import SwiftUI
 import RealityKit
 import RealityKitContent
+import Algorithms
 
 struct ContentView: View {
     @State private var showImmersiveSpace = false
@@ -16,16 +17,22 @@ struct ContentView: View {
     @Environment(\.openImmersiveSpace) var openImmersiveSpace
     @Environment(\.dismissImmersiveSpace) var dismissImmersiveSpace
     
-    @State private var musicDatas = MusicDatas()
+    @ObservedObject private var musicDatas: MusicDatas
+    init(musicDatas: MusicDatas){
+        self.musicDatas = musicDatas
+    }
     var body: some View {
         VStack {
             NavigationView {
                 List {
-                    ForEach(musicDatas.playingMusicDataHandlers) { playingMusicDataHandler in
-                        Section(header: Text("Music List")){
-                            NavigationLink(destination: PlayPianoView(playingMusicDataHandler: playingMusicDataHandler)) {
-                                Text(playingMusicDataHandler.getTitle())
-                            }
+                    Section(header: Text("Music List")){
+                        ForEach(musicDatas.getPlayingMusicDataHandlers().indexed(), id: \.element.id) { index, playingMusicDataHandler in
+                            NavigationLink(destination: PlayPianoView(musicDatas: musicDatas,playingMusicDataHandlerIndex: index)
+                                .onAppear {
+                                    musicDatas.setSelectedIndex(index: index)
+                                }) {
+                                    Text(playingMusicDataHandler.getTitle())
+                                }
                         }
                     }
                     Section(header: Text("Instrument")) {
@@ -60,6 +67,6 @@ struct ContentView: View {
 }
 
 #Preview(windowStyle: .automatic) {
-    ContentView()
+    ContentView(musicDatas: MusicDatas())
 }
 

@@ -27,11 +27,11 @@ struct MusicData: Identifiable {
     }
 }
 
-struct PlayingMusicDataHandler:Identifiable {
+struct PlayingMusicDataHandler:Identifiable{
     var id = UUID()
     private var musicData: MusicData
     private var csvDataHandler: CsvDataHandler
-    private var notesDataHandler: NotesDataHandler
+    var notesDataHandler: NotesDataHandler
     private var noteDatas: [NoteData] = []
     
     private var endTime: Double

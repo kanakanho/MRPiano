@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EB09F3292C7F1A1E00A8DB47 /* Algorithms in Frameworks */ = {isa = PBXBuildFile; productRef = EB09F3282C7F1A1E00A8DB47 /* Algorithms */; };
 		EB8808762C77DE5000827661 /* RealityKitContent in Frameworks */ = {isa = PBXBuildFile; productRef = EB8808752C77DE5000827661 /* RealityKitContent */; };
 		EB8808782C77DE5000827661 /* MRPianoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8808772C77DE5000827661 /* MRPianoApp.swift */; };
 		EB88087A2C77DE5000827661 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8808792C77DE5000827661 /* ContentView.swift */; };
@@ -49,6 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB09F3292C7F1A1E00A8DB47 /* Algorithms in Frameworks */,
 				EB8808762C77DE5000827661 /* RealityKitContent in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -169,6 +171,7 @@
 			name = MRPiano;
 			packageProductDependencies = (
 				EB8808752C77DE5000827661 /* RealityKitContent */,
+				EB09F3282C7F1A1E00A8DB47 /* Algorithms */,
 			);
 			productName = MRPiano;
 			productReference = EB8808702C77DE5000827661 /* MRPiano.app */;
@@ -198,6 +201,9 @@
 				Base,
 			);
 			mainGroup = EB8808672C77DE5000827661;
+			packageReferences = (
+				EB09F3272C7F1A1E00A8DB47 /* XCRemoteSwiftPackageReference "swift-algorithms" */,
+			);
 			productRefGroup = EB8808712C77DE5000827661 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -436,7 +442,23 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		EB09F3272C7F1A1E00A8DB47 /* XCRemoteSwiftPackageReference "swift-algorithms" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-algorithms.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		EB09F3282C7F1A1E00A8DB47 /* Algorithms */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB09F3272C7F1A1E00A8DB47 /* XCRemoteSwiftPackageReference "swift-algorithms" */;
+			productName = Algorithms;
+		};
 		EB8808752C77DE5000827661 /* RealityKitContent */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = RealityKitContent;

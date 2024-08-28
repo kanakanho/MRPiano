@@ -27,11 +27,11 @@ struct MusicData: Identifiable {
     }
 }
 
-struct PlayingMusicDataHandler:Identifiable {
+struct PlayingMusicDataHandler:Identifiable{
     var id = UUID()
     private var musicData: MusicData
     private var csvDataHandler: CsvDataHandler
-    private var notesDataHandler: NotesDataHandler
+    var notesDataHandler: NotesDataHandler
     private var noteDatas: [NoteData] = []
     
     private var endTime: Double
@@ -46,6 +46,10 @@ struct PlayingMusicDataHandler:Identifiable {
         
         // 演奏終了時間の取得
         self.endTime = csvDataHandler.lastNoteTime()
+    }
+    
+    func getNotesDataHandler() -> NotesDataHandler {
+        return notesDataHandler
     }
     
     func getEndTime() -> Double {

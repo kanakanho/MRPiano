@@ -9,7 +9,10 @@ import SwiftUI
 import Combine
 
 struct PlayPianoView: View {
+    @State private var musicDatas: MusicDatas
+    @State private var playingMusicDataHandlerIndex: Int
     @State private var playingMusicDataHandler: PlayingMusicDataHandler
+    @State private var notesDataHandler: NotesDataHandler
     
     @State private var offsetTime: Double
     @State private var middleTime: Double
@@ -24,14 +27,17 @@ struct PlayPianoView: View {
     @State private var playbackStartTime: Date?
     @State private var endTime: Double
     
-    init(playingMusicDataHandler: PlayingMusicDataHandler) {
-        self.playingMusicDataHandler = playingMusicDataHandler
-        self.offsetTime = playingMusicDataHandler.getOffsetTime()
-        self.middleTime = playingMusicDataHandler.getMiddleTime()
-        self.isCorrectFinger = playingMusicDataHandler.getIsCorrectFinger()
-        self.isCorrectMusic = playingMusicDataHandler.getIsCorrectMusic()
-        self.playMIDI = PlayMIDI(midiFileName: playingMusicDataHandler.getMidiFileName())
-        self.endTime = playingMusicDataHandler.getEndTime()
+    init(musicDatas: MusicDatas,playingMusicDataHandlerIndex: Int) {
+        self.musicDatas = musicDatas
+        self.playingMusicDataHandlerIndex = playingMusicDataHandlerIndex
+        self.playingMusicDataHandler = musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex]
+        self.notesDataHandler = musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex].getNotesDataHandler()
+        self.offsetTime = musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex].getOffsetTime()
+        self.middleTime = musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex].getMiddleTime()
+        self.isCorrectFinger = musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex].getIsCorrectFinger()
+        self.isCorrectMusic = musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex].getIsCorrectMusic()
+        self.playMIDI = PlayMIDI(midiFileName: musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex].getMidiFileName())
+        self.endTime = musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex].getEndTime()
     }
     
     var body: some View {
@@ -49,15 +55,18 @@ struct PlayPianoView: View {
                     .disabled(playing)
                     .onChange(of: offsetTime) {
                         playingMusicDataHandler.setOffsetTime(offsetTime: offsetTime)
+                        musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex].setOffsetTime(offsetTime: offsetTime)
                     }
                     Toggle("運指を表示", isOn: $isCorrectFinger)
                         .onChange(of: isCorrectFinger) {
                             playingMusicDataHandler.changeIsCorrectFinger()
+                            musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex].changeIsCorrectFinger()
                         }
                         .disabled(playing)
                     Toggle("正しい音楽を演奏", isOn: $isCorrectMusic)
                         .onChange(of: isCorrectMusic) {
                             playingMusicDataHandler.changeIsCorrectMusic()
+                            musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex].changeIsCorrectMusic()
                         }
                         .disabled(playing)
                 }
@@ -73,6 +82,7 @@ struct PlayPianoView: View {
                     Button(action: {
                         middleTime = 0.0
                         playingMusicDataHandler.setMiddleTime(middleTime: middleTime)
+                        musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex].setMiddleTime(middleTime: middleTime)
                     }) {
                         Image(systemName: "backward")
                             .padding(24)
@@ -88,6 +98,7 @@ struct PlayPianoView: View {
                             middleTime = 0.0
                         }
                         playingMusicDataHandler.setMiddleTime(middleTime: middleTime)
+                        musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex].setMiddleTime(middleTime: middleTime)
                     }) {
                         Image(systemName: "gobackward")
                             .padding(24)
@@ -138,6 +149,7 @@ struct PlayPianoView: View {
                             middleTime = endTime
                         }
                         playingMusicDataHandler.setMiddleTime(middleTime: middleTime)
+                        musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex].setMiddleTime(middleTime: middleTime)
                     }) {
                         Image(systemName: "goforward")
                             .padding(24)
@@ -162,6 +174,8 @@ struct PlayPianoView: View {
         initialMiddleTime = middleTime
         playbackStartTime = Date()
         startProgressPublisher()
+        notesDataHandler.setStartTime(date: Date())
+        musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex].notesDataHandler.setStartTime(date: Date())
     }
     
     private func stopPlaying() {
@@ -170,6 +184,8 @@ struct PlayPianoView: View {
             playMIDI.stop()
         }
         stopProgressPublisher()
+        notesDataHandler.setEndTime(date: Date())
+        musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex].notesDataHandler.setEndTime(date: Date())
     }
     
     private func startProgressPublisher() {
@@ -181,11 +197,13 @@ struct PlayPianoView: View {
                 if middleTime > endTime - 0.1 {
                     middleTime = 0.0
                     playingMusicDataHandler.setMiddleTime(middleTime: middleTime)
+                    musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex].setMiddleTime(middleTime: middleTime)
                     stopPlaying()
                     return
                 }
                 middleTime = max(0.0, initialMiddleTime + elapsedTime)
                 playingMusicDataHandler.setMiddleTime(middleTime: middleTime)
+                musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex].setMiddleTime(middleTime: middleTime)
             }
     }
     
@@ -197,15 +215,6 @@ struct PlayPianoView: View {
 
 struct PlayPianoView_Previews: PreviewProvider {
     static var previews: some View {
-        PlayPianoView(playingMusicDataHandler: PlayingMusicDataHandler(musicData: MusicData(
-            title: "楽曲名",
-            composer: "作者名",
-            csvFileName: "csvファイル名",
-            midiFileName: "midiファイル名",
-            offsetTime: 0.0,
-            middleTime: 0.0,
-            isCorrectFinger: true,
-            isCorrectMusic: true
-        )))
+        PlayPianoView(musicDatas: MusicDatas(),playingMusicDataHandlerIndex: 0)
     }
 }

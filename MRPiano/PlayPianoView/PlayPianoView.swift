@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 struct PlayPianoView: View {
-    @State private var musicDatas: MusicDatas
+    @ObservedObject private var musicDatas: MusicDatas
     @State private var playingMusicDataHandlerIndex: Int
     @State private var playingMusicDataHandler: PlayingMusicDataHandler
     @State private var notesDataHandler: NotesDataHandler
@@ -56,17 +56,23 @@ struct PlayPianoView: View {
                     .onChange(of: offsetTime) {
                         playingMusicDataHandler.setOffsetTime(offsetTime: offsetTime)
                         musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex].setOffsetTime(offsetTime: offsetTime)
+                        
+                        musicDatas.toggleIsChanged()
                     }
                     Toggle("運指を表示", isOn: $isCorrectFinger)
                         .onChange(of: isCorrectFinger) {
                             playingMusicDataHandler.changeIsCorrectFinger()
                             musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex].changeIsCorrectFinger()
+                            
+                            musicDatas.toggleIsChanged()
                         }
                         .disabled(playing)
                     Toggle("正しい音楽を演奏", isOn: $isCorrectMusic)
                         .onChange(of: isCorrectMusic) {
                             playingMusicDataHandler.changeIsCorrectMusic()
                             musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex].changeIsCorrectMusic()
+                            
+                            musicDatas.toggleIsChanged()
                         }
                         .disabled(playing)
                 }
@@ -83,6 +89,8 @@ struct PlayPianoView: View {
                         middleTime = 0.0
                         playingMusicDataHandler.setMiddleTime(middleTime: middleTime)
                         musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex].setMiddleTime(middleTime: middleTime)
+                        
+                        musicDatas.toggleIsChanged()
                     }) {
                         Image(systemName: "backward")
                             .padding(24)
@@ -99,6 +107,8 @@ struct PlayPianoView: View {
                         }
                         playingMusicDataHandler.setMiddleTime(middleTime: middleTime)
                         musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex].setMiddleTime(middleTime: middleTime)
+                        
+                        musicDatas.toggleIsChanged()
                     }) {
                         Image(systemName: "gobackward")
                             .padding(24)
@@ -150,6 +160,8 @@ struct PlayPianoView: View {
                         }
                         playingMusicDataHandler.setMiddleTime(middleTime: middleTime)
                         musicDatas.playingMusicDataHandlers[playingMusicDataHandlerIndex].setMiddleTime(middleTime: middleTime)
+                        
+                        musicDatas.toggleIsChanged()
                     }) {
                         Image(systemName: "goforward")
                             .padding(24)

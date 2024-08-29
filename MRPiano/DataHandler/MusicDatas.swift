@@ -10,10 +10,13 @@ import Foundation
 class MusicDatas: ObservableObject {
     var playingMusicDataHandlers: [PlayingMusicDataHandler] = []
     
+    @Published private var isChanged: Bool = false
     private var isSelected: Bool = false
     @Published private var selectedIndex: Int
     
     init() {
+        selectedIndex = 0
+        
         let musicData = MusicData(
             title: "Minuet", // 楽曲の名前
             composer: "Johann Sebastian Bach", // 楽曲の作者
@@ -38,12 +41,18 @@ class MusicDatas: ObservableObject {
             isCorrectMusic: true // 演奏時に正しい音楽をやるか
         )
         playingMusicDataHandlers.append(PlayingMusicDataHandler(musicData: anotherMusicData))
-        
-        self.selectedIndex = 0
     }
     
     func getPlayingMusicDataHandlers() -> [PlayingMusicDataHandler] {
         return playingMusicDataHandlers
+    }
+    
+    func toggleIsChanged() {
+        isChanged.toggle()
+    }
+    
+    func getIsChanged() -> Bool {
+        return isChanged
     }
     
     func getSelectedIndex() -> Int {
@@ -52,6 +61,7 @@ class MusicDatas: ObservableObject {
     
     func setSelectedIndex(index: Int) {
         print("selected index: \(index)")
+        isChanged.toggle()
         selectedIndex = index
         isSelected = true
     }

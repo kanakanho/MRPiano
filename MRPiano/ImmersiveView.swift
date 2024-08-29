@@ -21,6 +21,9 @@ struct ImmersiveView: View {
                 content.add(scene)
             }
             print(musicDatas.getSelectedPlayingMusicDataHandler().getTitle())
+            print("offsetTime",musicDatas.getSelectedPlayingMusicDataHandler().getOffsetTime())
+            print("middleTime",musicDatas.getSelectedPlayingMusicDataHandler().getMiddleTime())
+            print("CorrectFinger",musicDatas.getSelectedPlayingMusicDataHandler().getIsCorrectFinger())
         }
     }
 }
